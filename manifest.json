@@ -1,0 +1,30 @@
+﻿{
+  "name": "Cx Network Notifier",
+  "description": "Sends a notification to you when a Cx network streamer comes online.",
+  "version": "2.01",
+  "manifest_version": 2,
+  "icons": {
+    "64": "/icon/Cx_64.png",
+    "128": "/icon/Cx_128.png"
+  },
+  "browser_action": {
+    "default_icon": "/icon/Cx_128.png",
+    "default_title": "Cx Network Notifier",
+    "default_popup": "popup/main.html"
+  },
+  "options_page": "options/options.html",
+    "options_ui": {
+        "page": "options/options.html"
+    },
+  "background": {
+    "scripts": [
+      "/Scripts/jquery-3.3.1.min.js",
+      "/Scripts/alerter.js"
+    ],
+    "persistent": true
+  },
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "permissions":["alarms","notifications", "storage", "background", "storage"]
+}
+
+

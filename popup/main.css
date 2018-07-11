@@ -1,0 +1,32 @@
+body, html {
+	font-family: 'Noto Sans', sans-serif;
+	background: #292F33;
+	color: #ffffff;
+	font-size: 13px;
+	margin: 0;
+	-webkit-font-smoothing: antialiased;
+	text-shadow: rgba(0,0,0,.01) 0 0 1px;
+    overflow: hidden;
+}
+
+.container {
+	margin: 8px;
+}
+
+.button {
+    background-color: rgb(153, 15, 15);
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+	cursor: pointer;
+	width: 100%;
+    color: black;
+    border: 2px solid rgb(173, 16, 16);
+}
+.button:hover {background-color: rgb(155, 84, 105);}
+
+

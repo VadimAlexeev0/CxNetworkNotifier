@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>
-        <img src="../icon/Cx_64.png" alt="Cx"> Cx Network Notifier
+        <img src="../icon/Cx_32.png" alt="Cx"> Cx Network Notifier
     </h1>
     <h2>Options</h2>
     <form id="options">
@@ -15,6 +15,18 @@
             <tr>
                 <td>Display a notification when going live:</td>
                 <td><input type="checkbox" name="notification_enabled" checked></td>
+            </tr>
+            <tr>
+                <td>Require interaction to dismiss the notification(if disabled notifications disapear after 8 seconds):</td>
+                <td><input type="checkbox" name="interaction_enabled" checked></td>
+            </tr>
+            <tr>
+                <td>Display the time on the notification:</td>
+                <td><input type="checkbox" name="time_enabled" checked></td>
+            </tr>
+            <tr>
+                <td>Show a custom icon for each CxNetwork streamer:</td>
+                <td><input type="checkbox" name="icon_enabled" checked></td>
             </tr>
             <tr>
                 <td>Play a sound effect when going live:</td>
@@ -97,7 +109,7 @@
     </form>
     <br>
     <button class="testNotification">Test notification</button><br><br>
-    <small class="soon">Emote option changes will require a refresh of the livestream page.</small><br><br>
-    <small class="soon">Options are automatically saved, more options/functionality coming soon.</small>
+    <small class="soon">Options are automatically saved, more options/functionality coming soon.</small><br><br>
+    <small class="soon">Made by UncleBen.</small>
 </body>
 </html>

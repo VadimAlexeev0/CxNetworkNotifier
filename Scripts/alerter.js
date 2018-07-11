@@ -35,6 +35,9 @@ if (!localStorage.mizkif_enabled) localStorage.setItem("mizkif_enabled", "true")
 //Settings
 if (!localStorage.notification_enabled) localStorage.setItem("notification_enabled", "true");
 if (!localStorage.sound_enabled) localStorage.setItem("sound_enabled", "true");
+if (!localStorage.time_enabled) localStorage.setItem("time_enabled", "true");
+if (!localStorage.icon_enabled) localStorage.setItem("icon_enabled", "true");
+if (!localStorage.interaction_enabled) localStorage.setItem("interaction_enabled", "true");
 if (!localStorage.volume) localStorage.setItem("volume", "40");
 
 const SOUND_EFFECT = new Audio('sounds/online.mp3');
@@ -88,21 +91,43 @@ function search() {
                             const time = /(..)(:..)/.exec(new Date());
                             const hour = time[1] % 12 || 12;
                             const period = time[1] < 12 ? 'AM' : 'PM';
-
+                            //Enable disable time shit
+                            if (localStorage.getItem("time_enabled") === "true"){
+                                var time2 = (' (' + hour + time[2] + ' ' + period + ')')
+                            }
+                            else{
+                                var time2 = "";
+                            }
+                            //Customised images
+                            if(localStorage.getItem("icon_enabled") === "true"){
+                                var image = "/icon/people/"+id+".png";
+                            }
+                            else{
+                                var image = "/icon/people/default.png"
+                            }
                             if (localStorage.getItem("notification_enabled") === "true") {
-                                var notification={
-                                    type : "basic",
-                                    iconUrl :"/icon/people/"+id+".png",
-                                    message : name+ " is live",
-                                    title: 'Cx Network Notifier (' + hour + time[2] + ' ' + period + ')',
-                                    //requireInteraction : true
+                                if(localStorage.getItem("interaction_enabled") === "true"){
+                                    var notification={
+                                        type : "basic",
+                                        iconUrl : image,
+                                        message : name+ " is live",
+                                        title: 'Cx Network Notifier'+ time2,
+                                        requireInteraction: true,
+                                    }
+                                    chrome.notifications.create(notification);
                                 }
-                                chrome.notifications.create(notification);
+                                else{
+                                    var notification={
+                                        type : "basic",
+                                        iconUrl : image,
+                                        message : name+ " is live",
+                                        title: 'Cx Network Notifier'+time2,
+                                        requireInteraction: false,
+                                    }
+                                    chrome.notifications.create(notification);
+                                }
                             }
                             if (localStorage.getItem("sound_enabled") === "true") {
-                                //console.log("volume: "+localStorage.getItem("volume"))
-                                //console.log("sound will play or osmething")
-
                                 const volume = (localStorage.getItem("volume") / 100);
 
                                 SOUND_EFFECT.volume = (typeof volume === 'undefined' ? 0.50 : volume);

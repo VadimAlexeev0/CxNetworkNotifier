@@ -19,12 +19,27 @@ window.addEventListener('load', function () {
     streamers.mizkif_enabled.checked = JSON.parse(localStorage.mizkif_enabled)
     // Settings
     options.notification_enabled.checked = JSON.parse(localStorage.notification_enabled)
+    options.interaction_enabled.checked = JSON.parse(localStorage.interaction_enabled);
+    options.time_enabled.checked = JSON.parse(localStorage.time_enabled);
+    options.icon_enabled.checked = JSON.parse(localStorage.icon_enabled);
     options.sound_enabled.checked = JSON.parse(localStorage.sound_enabled);
     options.volume.value = JSON.parse(localStorage.volume);
 
     //Setting Part
     options.notification_enabled.onchange = function () {
         localStorage.notification_enabled = options.notification_enabled.checked;
+    };
+
+    options.interaction_enabled.onchange = function () {
+        localStorage.interaction_enabled = options.interaction_enabled.checked;
+    };
+
+    options.time_enabled.onchange = function () {
+        localStorage.time_enabled = options.time_enabled.checked;
+    };
+
+    options.icon_enabled.onchange = function () {
+        localStorage.icon_enabled = options.icon_enabled.checked;
     };
 
     options.sound_enabled.onchange = function () {
@@ -96,16 +111,40 @@ function testnotification() {
     const time = /(..)(:..)/.exec(new Date());
     const hour = time[1] % 12 || 12;
     const period = time[1] < 12 ? 'AM' : 'PM';
-    
+    if(localStorage.getItem("time_enabled") === "true"){
+        var time2 = (' (' + hour + time[2] + ' ' + period + ')')
+    }
+    else{
+        var time2 = "";
+    }
+    //Customised images
+    if(localStorage.getItem("icon_enabled") === "true"){
+        var image = "../icon/people/ice_poseidon.png";
+    }
+    else{
+        var image = "../icon/people/default.png"
+    }
     if (localStorage.getItem("notification_enabled") === "true") {
-        var notification={
-            type : "basic",
-            iconUrl :"../icon/people/ice_poseidon.png",
-            message : "Ice Poseidon is live",
-            title: 'Cx Network Notifier (' + hour + time[2] + ' ' + period + ')',
-            //requireInteraction : true
+        if (localStorage.getItem("notification_enabled") === "true") {
+            var notification={
+                type : "basic",
+                iconUrl : image,
+                message : "Ice Poseidon is live",
+                title: 'Cx Network Notifier'+time2,
+                requireInteraction : true
+            }
+            chrome.notifications.create(notification);
         }
-        chrome.notifications.create(notification);
+        else{
+            var notification={
+                type : "basic",
+                iconUrl : image,
+                message : "Ice Poseidon is live",
+                title: 'Cx Network Notifier'+time2,
+                requireInteraction : false  
+            }
+            chrome.notifications.create(notification);
+        }
     }
     if (localStorage.getItem("sound_enabled") === "true") {
         const volume = (localStorage.getItem("volume") / 100);

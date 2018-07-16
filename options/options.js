@@ -17,6 +17,7 @@ window.addEventListener('load', function () {
     streamers.anything4views_enabled.checked = JSON.parse(localStorage.anything4views_enabled)
     streamers.hyphonix_enabled.checked = JSON.parse(localStorage.hyphonix_enabled)
     streamers.mizkif_enabled.checked = JSON.parse(localStorage.mizkif_enabled)
+    streamers.vexxed_enabled.checked = JSON.parse(localStorage.vexxed_enabled)
     // Settings
     options.notification_enabled.checked = JSON.parse(localStorage.notification_enabled)
     options.interaction_enabled.checked = JSON.parse(localStorage.interaction_enabled);
@@ -102,30 +103,37 @@ window.addEventListener('load', function () {
     streamers.mizkif_enabled.onchange = function () {
         localStorage.mizkif_enabled = streamers.mizkif_enabled.checked;
     };
+    streamers.vexxed_enabled.onchange = function () {
+        localStorage.vexxed_enabled = streamers.vexxed_enabled.checked;
+    };
 });
-
+const SOUND_EFFECT = new Audio('../sounds/online.mp3');
 function testnotification() {
-    const SOUND_EFFECT = new Audio('../sounds/online.mp3');
-
     console.log("clicked")
-    const time = /(..)(:..)/.exec(new Date());
-    const hour = time[1] % 12 || 12;
-    const period = time[1] < 12 ? 'AM' : 'PM';
-    if(localStorage.getItem("time_enabled") === "true"){
-        var time2 = (' (' + hour + time[2] + ' ' + period + ')')
-    }
-    else{
-        var time2 = "";
-    }
-    //Customised images
-    if(localStorage.getItem("icon_enabled") === "true"){
-        var image = "../icon/people/ice_poseidon.png";
-    }
-    else{
-        var image = "../icon/people/default.png"
-    }
+    //if (localStorage.getItem("sound_enabled") === true) {
+        console.log("sound")
+        const volume = (localStorage.getItem("volume") / 100);
+        SOUND_EFFECT.volume = (typeof volume === 'undefined' ? 0.50 : volume);
+        SOUND_EFFECT.play();
+    //}
     if (localStorage.getItem("notification_enabled") === "true") {
-        if (localStorage.getItem("notification_enabled") === "true") {
+        const time = /(..)(:..)/.exec(new Date());
+        const hour = time[1] % 12 || 12;
+        const period = time[1] < 12 ? 'AM' : 'PM';
+        if(localStorage.getItem("time_enabled") === "true"){
+            var time2 = (' (' + hour + time[2] + ' ' + period + ')')
+        }
+        else{
+            var time2 = "";
+        }
+        //Customised images
+        if(localStorage.getItem("icon_enabled") === "true"){
+            var image = "../icon/people/ice_poseidon.png";
+        }
+        else{
+            var image = "../icon/people/default.png"
+        }
+        if (localStorage.getItem("interaction_enabled") === "true") {
             var notification={
                 type : "basic",
                 iconUrl : image,
@@ -145,10 +153,5 @@ function testnotification() {
             }
             chrome.notifications.create(notification);
         }
-    }
-    if (localStorage.getItem("sound_enabled") === "true") {
-        const volume = (localStorage.getItem("volume") / 100);
-        SOUND_EFFECT.volume = (typeof volume === 'undefined' ? 0.50 : volume);
-        SOUND_EFFECT.play();
     }
 };

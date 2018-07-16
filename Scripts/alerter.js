@@ -15,6 +15,7 @@ if (!localStorage.setItem("mexicanandy_live", false)) localStorage.setItem("mexi
 if (!localStorage.setItem("anything4views_live", false)) localStorage.setItem("anything4views_live", false);
 if (!localStorage.setItem("hyphonix_live", false)) localStorage.setItem("hyphonix_live", false);
 if (!localStorage.setItem("mizkif_live", false)) localStorage.setItem("mizkif_live", false);
+if (!localStorage.setItem("vexxed_live", false)) localStorage.setItem("vexxed_live", false);
 //Toggles
 if (!localStorage.ice_poseidon_enabled) localStorage.setItem("ice_poseidon_enabled", "true");
 if (!localStorage.sam_pepper_enabled) localStorage.setItem("sam_pepper_enabled", "true");
@@ -32,6 +33,7 @@ if (!localStorage.mexicanandy_enabled) localStorage.setItem("mexicanandy_enabled
 if (!localStorage.anything4views_enabled) localStorage.setItem("anything4views_enabled", "true");
 if (!localStorage.hyphonix_enabled) localStorage.setItem("hyphonix_enabled", "true");
 if (!localStorage.mizkif_enabled) localStorage.setItem("mizkif_enabled", "true");
+if (!localStorage.vexxed_enabled) localStorage.setItem("vexxed_enabled", "true");
 //Settings
 if (!localStorage.notification_enabled) localStorage.setItem("notification_enabled", "true");
 if (!localStorage.sound_enabled) localStorage.setItem("sound_enabled", "true");
@@ -56,7 +58,45 @@ chrome.alarms.onAlarm.addListener(function (alarm) {
  
 chrome.notifications.onClicked.addListener(function(notification, byUser) {
     chrome.tabs.create({url: "https://www.iceposeidon.com/"});
+    chrome.notifications.clear(notification);
 });
+
+
+function onInstall() {
+    console.log("Extension Installed");
+}
+
+function onUpdate() {
+    console.log("Extension Updated");
+    $.get("https://api-production.iceposeidon.com/streamers/full", function (shit) {
+        var data = shit
+        //console.log(data.streamers.length)
+        var i;
+        for(i = 0; i < data.streamers.length; i++){
+            temp1 = data.streamers[number].id;
+            id = temp1.toString();
+            localStorage.setItem(id+"_live", true);
+        }
+    })
+}
+
+function getVersion() {
+    var details = chrome.app.getDetails();
+    return details.version;
+}
+
+// Check if the version has changed.
+var currVersion = getVersion();
+var prevVersion = localStorage['version']
+if (currVersion != prevVersion) {
+    // Check if we just installed this extension.
+    if (typeof prevVersion == 'undefined') {
+        onInstall();
+    } else {
+        onUpdate();
+    }
+    localStorage['version'] = currVersion;
+}
 
 search();
 function search() {
@@ -88,29 +128,29 @@ function search() {
                 if(data.streamers[number].liveData.live === true){
                     if(localStorage.getItem(id+"_live") === "false"){
                         if(localStorage.getItem(id+"_enabled") === "true"){
-                            const time = /(..)(:..)/.exec(new Date());
-                            const hour = time[1] % 12 || 12;
-                            const period = time[1] < 12 ? 'AM' : 'PM';
-                            //Enable disable time shit
-                            if (localStorage.getItem("time_enabled") === "true"){
-                                var time2 = (' (' + hour + time[2] + ' ' + period + ')')
-                            }
-                            else{
-                                var time2 = "";
-                            }
-                            //Customised images
-                            if(localStorage.getItem("icon_enabled") === "true"){
-                                var image = "/icon/people/"+id+".png";
-                            }
-                            else{
-                                var image = "/icon/people/default.png"
-                            }
                             if (localStorage.getItem("notification_enabled") === "true") {
+                                const time = /(..)(:..)/.exec(new Date());
+                                const hour = time[1] % 12 || 12;
+                                const period = time[1] < 12 ? 'AM' : 'PM';
+                                //Enable disable time shit
+                                if (localStorage.getItem("time_enabled") === "true"){
+                                    var time2 = (' (' + hour + time[2] + ' ' + period + ')')
+                                }
+                                else{
+                                    var time2 = "";
+                                }
+                                //Customised images
+                                if(localStorage.getItem("icon_enabled") === "true"){
+                                    var image = "/icon/people/"+id+".png";
+                                }
+                                else{
+                                    var image = "/icon/people/default.png"
+                                }
                                 if(localStorage.getItem("interaction_enabled") === "true"){
                                     var notification={
                                         type : "basic",
                                         iconUrl : image,
-                                        message : name+ " is live",
+                                        message : name+ "is live",
                                         title: 'Cx Network Notifier'+ time2,
                                         requireInteraction: true,
                                     }
@@ -120,13 +160,21 @@ function search() {
                                     var notification={
                                         type : "basic",
                                         iconUrl : image,
-                                        message : name+ " is live",
+                                        message : name+ "is live",
                                         title: 'Cx Network Notifier'+time2,
                                         requireInteraction: false,
                                     }
                                     chrome.notifications.create(notification);
                                 }
                             }
+                            if (localStorage.getItem("sound_enabled") === "true") {
+                                const volume = (localStorage.getItem("volume") / 100);
+
+                                SOUND_EFFECT.volume = (typeof volume === 'undefined' ? 0.50 : volume);
+                                SOUND_EFFECT.play();
+                            }
+                        }
+                        else{
                             if (localStorage.getItem("sound_enabled") === "true") {
                                 const volume = (localStorage.getItem("volume") / 100);
 

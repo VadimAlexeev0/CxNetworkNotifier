@@ -1,7 +1,7 @@
 <head>
-    <title>Options</title>
+    <title>New Install</title>
     <script src="../Scripts/jquery-3.3.1.min.js"></script>
-    <script src="options.js"></script>
+    <script src="install.js"></script>
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
@@ -14,28 +14,31 @@
     </style>
 </head>
 <body>
+    <div class="fixed-action-btn">
+        <a id="saveBtn"class="btn-floating btn-large red">
+            <i class="large material-icons">save</i>
+        </a>
+        
+    </div>
     <div class="container">
+
+        <div class="row">
+            <img class="responsive-img col" src="../icon/Cx_128.png">
+            <h3 class="title center-align col">Thank you for installing Cx Network Notifier</h3>
+        </div>
+        <h5 class ="">Please choose your prefered settings and which streamers you want to recieve notifications for:</h5>
 
         <div class="section">
             <ul class="collection with-header" id="settings">
                 <li class="collection-header"><h4>Settings</h4></li>
             </ul>
-
             <form id="volume" action="#">
                 <h4 class="title">Volume</h4>
                 <p class="range-field">
                     <input name="volumeSlider" type="range" class="volumeRange" min="0" max="100"/>
                 </p>
             </form>
-
-            <form id="interval" action="#">
-                <h4 class="title">Interval (in seconds) requires a restart.</h4>
-                <p class="range-field">
-                    <input name="intervalSlider" type="range" class="volumeRange" min="1" max="60"/>
-                </p>
-            </form>
-
-            <a id="testnotification"class="waves-effect waves-light btn-large"><i class="material-icons left">notifications_active</i>Test Notification</a>
+            <a id="testnotification"class=" waves-effect waves-light btn-large"><i class="material-icons left">notifications_active</i>Test Notification</a>
           </div>
           <div class="divider"></div>
 
@@ -44,6 +47,7 @@
                 <li class="collection-header"><h4>Toggles</h4></li>
 
             </ul>
+            <h6>Please click the floating red save icon in the bottom right to exit.</h6>
           </div>
       </div>
     <script type="text/javascript" src="../Scripts/js/materialize.js"></script>

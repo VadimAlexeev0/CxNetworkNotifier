@@ -1,6 +1,15 @@
 window.addEventListener('load', function () {
-    //Dynamic Settings
+    //Nav Shit
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.fixed-action-btn');
+        var instances = M.FloatingActionButton.init(elems, options);
+    });
 
+    $('#saveBtn').click(function () {
+        console.log("Exit Test")
+        window.close()
+    });
+    //Dynamic Settings
     settings = [
         "notification_enabled",
         "interaction_enabled",
@@ -42,7 +51,6 @@ window.addEventListener('load', function () {
     }
     //Volume Slider
     volume.volumeSlider.value = JSON.parse(localStorage.volume);
-    interval.intervalSlider.value = JSON.parse(localStorage.interval);
 
     //Dynamic Toggle Table
     $.get("https://api-production.iceposeidon.com/streamers/full", function (shit) {
@@ -91,12 +99,7 @@ window.addEventListener('load', function () {
     volume.volumeSlider.onchange = function () {
         console.log(volume.volumeSlider.value)
         localStorage.volume =  volume.volumeSlider.value;
-    };
-    interval.intervalSlider.onchange = function () {
-        console.log(interval.intervalSlider.value)
-        localStorage.interval =  interval.intervalSlider.value;
     };  
-    
     //Click listeners
     function toggleFunction(event){
         console.log("clicked")

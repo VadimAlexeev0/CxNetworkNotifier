@@ -2,7 +2,11 @@
   "name": "Cx Network Notifier",
   "short_name": "Cx Network Notifier",
   "description": "Sends a notification to you when a Cx network streamer comes online.",
+<<<<<<< HEAD
   "version": "3.10",
+=======
+  "version": "2.09",
+>>>>>>> 0d04f5896633357350b05b9561802248f5461667
   "manifest_version": 2,
   "icons": {
     "64": "/icon/Cx_64.png",

@@ -135,15 +135,27 @@ window.addEventListener('load', function () {
         console.log("Notification Test")
     });
 });
-const SOUND_EFFECT = new Audio('../sounds/online.mp3');
+
 function testnotification() {
+    const SOUND_EFFECT = new Audio('../sounds/online.mp3');
+
     console.log("clicked")
-    //if (localStorage.getItem("sound_enabled") === true) {
-        console.log("sound")
-        const volume = (localStorage.getItem("volume") / 100);
-        SOUND_EFFECT.volume = (typeof volume === 'undefined' ? 0.50 : volume);
-        SOUND_EFFECT.play();
-    //}
+    const time = /(..)(:..)/.exec(new Date());
+    const hour = time[1] % 12 || 12;
+    const period = time[1] < 12 ? 'AM' : 'PM';
+    if(localStorage.getItem("time_enabled") === "true"){
+        var time2 = (' (' + hour + time[2] + ' ' + period + ')')
+    }
+    else{
+        var time2 = "";
+    }
+    //Customised images
+    if(localStorage.getItem("icon_enabled") === "true"){
+        var image = "../icon/people/ice_poseidon.png";
+    }
+    else{
+        var image = "../icon/people/default.png"
+    }
     if (localStorage.getItem("notification_enabled") === "true") {
         if (localStorage.getItem("interaction_enabled") === "true") {
             var notification={
@@ -165,5 +177,10 @@ function testnotification() {
             }
             chrome.notifications.create(notification);
         }
+    }
+    if (localStorage.getItem("sound_enabled") === "true") {
+        const volume = (localStorage.getItem("volume") / 100);
+        SOUND_EFFECT.volume = (typeof volume === 'undefined' ? 0.50 : volume);
+        SOUND_EFFECT.play();
     }
 };

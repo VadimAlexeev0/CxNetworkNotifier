@@ -81,43 +81,6 @@ chrome.notifications.onClicked.addListener(function(notification, byUser) {
     chrome.notifications.clear(notification);
 });
 
-
-function onInstall() {
-    console.log("Extension Installed");
-}
-
-function onUpdate() {
-    console.log("Extension Updated");
-    $.get("https://api-production.iceposeidon.com/streamers/full", function (shit) {
-        var data = shit
-        //console.log(data.streamers.length)
-        var i;
-        for(i = 0; i < data.streamers.length; i++){
-            temp1 = data.streamers[number].id;
-            id = temp1.toString();
-            localStorage.setItem(id+"_live", true);
-        }
-    })
-}
-
-function getVersion() {
-    var details = chrome.app.getDetails();
-    return details.version;
-}
-
-// Check if the version has changed.
-var currVersion = getVersion();
-var prevVersion = localStorage['version']
-if (currVersion != prevVersion) {
-    // Check if we just installed this extension.
-    if (typeof prevVersion == 'undefined') {
-        onInstall();
-    } else {
-        onUpdate();
-    }
-    localStorage['version'] = currVersion;
-}
-
 search();
 function search() {
     //console.clear() 
@@ -133,7 +96,15 @@ function search() {
             }
             function check(number){
                 //Removes Non ascii chars like emoji
-                name = data.streamers[number].name.replace(/[^\x00-\x7F]/g, "");
+                var ranges = [
+                    '\ud83c[\udf00-\udfff]', // U+1F300 to U+1F3FF
+                    '\ud83d[\udc00-\ude4f]', // U+1F400 to U+1F64F
+                    '\ud83d[\ude80-\udeff]'  // U+1F680 to U+1F6FF
+                ];
+                //Removes Non ascii chars like emoji
+                nameemoji = data.streamers[number].name
+                name = nameemoji.replace(new RegExp(ranges.join('|'), 'g'), '');
+                
                 temp1 = data.streamers[number].id
                 id = temp1.toString();
                 console.log("Name: " + name)
@@ -167,23 +138,6 @@ function search() {
                             } */
                             var image = "/icon/people/default.png"
                             if (localStorage.getItem("notification_enabled") === "true") {
-                                const time = /(..)(:..)/.exec(new Date());
-                                const hour = time[1] % 12 || 12;
-                                const period = time[1] < 12 ? 'AM' : 'PM';
-                                //Enable disable time shit
-                                if (localStorage.getItem("time_enabled") === "true"){
-                                    var time2 = (' (' + hour + time[2] + ' ' + period + ')')
-                                }
-                                else{
-                                    var time2 = "";
-                                }
-                                //Customised images
-                                if(localStorage.getItem("icon_enabled") === "true"){
-                                    var image = "/icon/people/"+id+".png";
-                                }
-                                else{
-                                    var image = "/icon/people/default.png"
-                                }
                                 if(localStorage.getItem("interaction_enabled") === "true"){
                                     var notification={
                                         type : "basic",
@@ -205,14 +159,6 @@ function search() {
                                     chrome.notifications.create(notification);
                                 }
                             }
-                            if (localStorage.getItem("sound_enabled") === "true") {
-                                const volume = (localStorage.getItem("volume") / 100);
-
-                                SOUND_EFFECT.volume = (typeof volume === 'undefined' ? 0.50 : volume);
-                                SOUND_EFFECT.play();
-                            }
-                        }
-                        else{
                             if (localStorage.getItem("sound_enabled") === "true") {
                                 const volume = (localStorage.getItem("volume") / 100);
 
